@@ -1,29 +1,16 @@
 #!/usr/bin/make -f
 # Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+export DH_VERBOSE=1
 
 <% @package_overrides.each do |var| %>
 <%= var %>
 <% end -%>
 
 override_dh_auto_install:
-	install -d debian/tmp
-	# Copy each directory into place
-<%- get_directories.map {|d| d.path.sub(/^\//,'')}.each do |dir| -%>
-	if [ -d <%= dir %> ]; then \
-		install -d debian/tmp/<%= File.dirname(dir) %>; \
-		cp -pr <%= dir %> debian/tmp/<%= File.dirname(dir) %>; \
-	else \
-		install -d debian/tmp/<%= dir %>; \
-	fi
-<%- end -%>
-	# Copy each of the extra files into place
-<%- (get_files + get_configfiles).map {|f| f.path.sub(/^\//,'')}.each do |file| -%>
-	install -d debian/tmp/<%= File.dirname(file) %>
-	cp -Rp <%= file %> debian/tmp/<%= File.dirname(file) %>
-<%- end -%>
 
 override_dh_perl:
+
+override_dh_dwz:
 
 override_dh_shlibdeps:
 
